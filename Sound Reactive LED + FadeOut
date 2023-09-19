@@ -1,0 +1,28 @@
+int i = 255;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(9, OUTPUT);
+  pinMode(0, INPUT);
+  pinMode(1, INPUT);
+}
+
+void loop() {
+  int volumen = analogRead(A1);
+  int threshold = analogRead(A0);
+
+  if (4*volumen >threshold) { // Si el volumen supera el umbral, haz un fade out del LED
+    for (i =255; i>0 ; i=i*0.9) {
+      Serial.println(i);
+      analogWrite(9, i);
+      int volumen = analogRead(A1); // Vuelve a escuchar dentro del loop. 
+      int threshold = analogRead(A0);
+      if (4*volumen >threshold) { // Si aún lo supera, mantenlo encendido
+        i=255;
+      }
+    }
+  }
+  else { // Si el volumen baja del umbral, apaga el LED
+ analogWrite(9,0);
+  }
+}
