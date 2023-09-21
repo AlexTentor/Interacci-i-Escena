@@ -1,0 +1,28 @@
+const int LEDPin= 8;
+const int PIRPin= 9;
+
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(LEDPin, OUTPUT);
+  pinMode(PIRPin, INPUT);
+  pinMode(0, INPUT);
+}
+
+void loop()
+{
+int value= digitalRead(PIRPin);
+ Serial.println(value);
+ int tono = analogRead(A0);
+  if (value == HIGH)
+  {
+   tone(8, tono/4);
+   delay(500);
+    
+  }
+  else
+  {
+    noTone(8);
+  }
+}
