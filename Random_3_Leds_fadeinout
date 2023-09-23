@@ -1,0 +1,28 @@
+float i = 1;
+float rate = 1.05;
+int randomA = random(9, 12);
+
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(9, OUTPUT);
+}
+
+void loop() {
+  int randomA = random(9, 12);
+  for (i = 1; i < 255; i = i * rate) {
+    Serial.println(i);
+    analogWrite(randomA, i);
+    if (i > 200 || i < 1) {
+      rate = 1 / rate;
+    }
+    if (i < 1) {
+      analogWrite(randomA, 0);
+      break;
+    }
+  }
+
+  rate = rate + 0.0001;
+}
