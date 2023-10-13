@@ -1,0 +1,146 @@
+
+int Chordla[4] = { 55, 65, 82, 98 };
+int Chordlasencer[4] = { 55, 65, 82, 110 };
+int Chordre[4] = { 55, 73, 87, 110 };
+int Lamenor[8] = { 55, 61, 65, 73, 82, 87, 100, 110 };
+float tempo = 50;
+int valor;
+int led;
+
+/*
+Note1 = 55
+Note 2 = 61
+Note 3 = 65
+Note 4 = 73
+Note 5= 82
+Note 6 = 87
+Note 7 =100
+*/
+
+void setup() {
+  // put your setup code here, to run once:
+  pinMode(A1, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(A5, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  valor = analogRead(A5);
+  /// ESCALA LA
+  if (valor > 700) {
+    for (int i = 0; i < 7; i++) {
+      float tempo = (1000 - valor) / 4;
+      valor = analogRead(A5);
+      int led = map(Lamenor[i], 55, 110, 100, 255);
+      tone(A1, 30);
+      delay(1);
+      tone(A1, Lamenor[i]);
+      analogWrite(3, 0);
+      delay(tempo / 2);
+      analogWrite(3, 255);
+      delay(tempo / 2);
+      analogWrite(3, 0);
+      noTone(A1);
+      delay(tempo);
+      Serial.println(Lamenor[i]);
+      valor = analogRead(A5);
+      if (valor < 700) {
+        break;
+      }
+    }
+  }
+  if (valor > 550 && valor <= 700) {
+    /// ESCALA LA pabajo
+    for (int i = 7; i > -1; i--) {
+      float tempo = (1000 - valor) / 4;
+      valor = analogRead(A5);
+      int led = map(Lamenor[i], 55, 110, 50, 255);
+      tone(A1, 30);
+      delay(1);
+      tone(A1, Lamenor[i]);
+      analogWrite(3, 0);
+      delay(tempo / 2);
+      analogWrite(3, 255);
+      delay(tempo / 2);
+      noTone(A1);
+      analogWrite(3, 0);
+      delay(tempo);
+      Serial.println(Lamenor[i]);
+      valor = analogRead(A5);
+      if (valor < 550 || valor >= 700) {
+        break;
+      }
+    }
+  }
+  if (valor <= 550 && valor > 400) {
+    /// CHORD RE
+    for (int i = 0; i < 4; i++) {
+      float tempo = (1000 - valor) / 4;
+      valor = analogRead(A5);
+      int led = map(Chordre[i], 55, 110, 50, 255);
+      tone(A1, 30);
+      delay(1);
+      tone(A1, Chordre[i]);
+      analogWrite(3, 0);
+      delay(tempo / 2);
+      analogWrite(3, 255);
+      delay(tempo / 2);
+      analogWrite(3, 0);
+      noTone(A1);
+      delay(tempo);
+      Serial.println(Chordre[i]);
+      valor = analogRead(A5);
+      if (valor < 400 || valor >= 700) {
+        break;
+      }
+    }
+  }
+  if (valor <= 400 && valor > 300) {
+    /// CHORD LA
+    for (int i = 0; i < 4; i++) {
+      float tempo = (1000 - valor) / 4;
+      valor = analogRead(A5);
+      //int led = map(Chordlasencer[i], 55, 110, 50, 255);
+      tone(A1, 30);
+      delay(1);
+      tone(A1, Chordlasencer[i]);
+      analogWrite(3, 0);
+      delay(tempo / 2);
+      analogWrite(3, 255);
+      delay(tempo / 2);
+      analogWrite(3, 0);
+      noTone(A1);
+      delay(tempo);
+      Serial.println(Chordlasencer[i]);
+      valor = analogRead(A5);
+      if (valor > 400 || valor < 300) {
+        break;
+      }
+    }
+  }
+  if (valor <= 300) {
+    /// CHORD LA
+    for (int i = 0; i < 4; i++) {
+      float tempo = (1000 - valor) / 4;
+      valor = analogRead(A5);
+      //int led = map(Chordla[i], 55, 110, 50, 255);
+      tone(A1, 30);
+      delay(1);
+      tone(A1, Chordla[i]);
+      analogWrite(3, 0);
+      delay(tempo / 2);
+      analogWrite(3, 255);
+      delay(tempo / 2);
+      analogWrite(3, 0);
+      noTone(A1);
+      delay(tempo);
+      Serial.println(Chordla[i]);
+      valor = analogRead(A5);
+      if (valor > 300) {
+        break;
+      }
+    }
+  }
+}
