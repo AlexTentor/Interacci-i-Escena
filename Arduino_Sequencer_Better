@@ -1,15 +1,13 @@
 byte arpegios[5][8] = {
-  { 55, 55, 55, 55, 55, 55, 55, 55 },
-  { 55, 65, 82, 98, 55, 65, 82, 98 },
-  { 55, 65, 82, 110, 55, 65, 82, 110 },
-  { 55, 73, 87, 110, 55, 73, 87, 110 },
-  { 55, 61, 65, 73, 82, 87, 100, 110 }
+  { 55, 55, 55, 55, 55, 55, 55, 55 },    // LA
+  { 55, 65, 82, 98, 55, 65, 82, 98 },    // LAm7
+  { 55, 65, 82, 110, 55, 65, 82, 110 },  // LAm
+  { 55, 73, 87, 110, 55, 73, 87, 110 },  // Dmin / A
+  { 55, 61, 65, 73, 82, 87, 100, 110 }   // ESCALA LA
 };
 
-int var;
-int tem;
-float tempo;
-int valor;
+float tempo = 200;
+
 int val;
 int azar;
 int threshold = 4;
@@ -21,33 +19,32 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  valor = analogRead(A5);
-  val = map(valor, 0, 1023, 1, 6);
-  tem = analogRead(A3);
-  float tempo = map(tem, 0, 1023, 10, 400);
-  arpeggiator(val - 1, val+1, val);
+  val = map(analogRead(A3), 0, 1023, 1, 6);
+  //tem = analogRead(A5);
+  float tempo = map(analogRead(A5), 0, 1023, 10, 400);
+  arpeggiator(val - 1, val + 1, val);
 }
 
 void arpeggiator(int x, int y, int z) {
   for (int i = 0; i < 8; i++) {
-    valor = analogRead(A5);
-    val = map(valor, 0, 1023, 1, 6);
+    tempo = 50;
+    val = map(analogRead(A3), 0, 1023, 1, 6);
     int azar = random(0, 7);
-    tem = analogRead(A3);
-    float tempo = map(tem, 0, 1023, 30, 400);
+    // tem = analogRead(A3);
+    float tempo = map(analogRead(A5), 0, 1023, 30, 400);
+    ;
     tone(A1, 30);
     delay(1);
     tone(A1, arpegios[val - 1][i]);
     if (azar > threshold) {
-      analogWrite(3, 255);
+      analogWrite(4, 255);
     }
     delay(tempo);
     noTone(A1);
-    analogWrite(3, 0);
+    analogWrite(4, 0);
     delay(tempo);
-    valor = analogRead(A5);
-    val = map(valor, 0, 1023, 1, 6);
-    Serial.println(i);
+    val = map(analogRead(A3), 0, 1023, 1, 6);
+    Serial.println(val);
     if (val < x || val >= y || i > 8) {
       i = 0;
       break;
